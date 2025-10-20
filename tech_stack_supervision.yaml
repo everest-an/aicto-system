@@ -1,0 +1,22 @@
+# tech_stack_supervision.yaml
+supervision_rules:
+  frontend:
+    react:
+      required_components: ["组件化", "状态管理", "路由", "API集成", "错误边界"]
+      quality_checks: ["ESLint通过", "TypeScript编译", "Bundle大小分析"]
+    vue:
+      required_components: ["Vuex/Pinia", "Vue Router", "组件通信", "生命周期处理"]
+    
+  backend:
+    nodejs:
+      required_modules: ["身份验证", "数据验证", "错误处理", "日志记录", "API文档"]
+      database: ["连接池", "事务处理", "数据迁移"]
+    python:
+      required_modules: ["Django/Flask完整配置", "ORM设置", "中间件", "序列化"]
+
+  mobile:
+    react_native:
+      required_features: ["导航栈完整", "原生模块集成", "离线支持", "推送通知"]
+    flutter:
+      required_features: ["状态管理", "路由导航", "平台适配", "性能优化"]
+
