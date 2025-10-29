@@ -1,5 +1,5 @@
-# cto-supervision-workflow.yml
-name: AI CTO Supervision
+# pm-supervision-workflow.yml
+name: AI PM Supervision
 
 on:
   push:
@@ -26,9 +26,9 @@ jobs:
           python scripts/dependency_checker.py || echo "Dependency checker not yet implemented"
           python scripts/security_auditor.py || echo "Security auditor not yet implemented"
           
-      - name: Generate CTO Report
+      - name: Generate PM Report
         run: |
-          echo "🧠 AI CTO 监督报告" > report.md
+          echo "🧠 AI PM 监督报告" > report.md
           echo "==================" >> report.md
           echo "" >> report.md
           echo "## 审计时间" >> report.md
@@ -42,7 +42,7 @@ jobs:
       - name: Upload Report
         uses: actions/upload-artifact@v4
         with:
-          name: cto-report
+          name: pm-report
           path: report.md
           
       - name: Create Intervention Issue
@@ -50,5 +50,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh issue create --title "🚨 CTO干预要求" --body-file report.md --label "cto-intervention" || echo "Issue creation skipped"
+          gh issue create --title "🚨 PM干预要求" --body-file report.md --label "pm-intervention" || echo "Issue creation skipped"
 

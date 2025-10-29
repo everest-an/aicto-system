@@ -1,6 +1,6 @@
-# AI CTO 监督系统
+# AI PM 监督系统
 
-一个定制化的AI CTO监督系统，用于自动化代码审查、项目监督和开发流程管理。
+一个定制化的AI PM监督系统，用于自动化代码审查、项目监督和开发流程管理。
 
 ## 🎯 系统功能
 
@@ -24,22 +24,22 @@
 ## 📁 项目结构
 
 ```
-aicto-system/
+aipm-system/
 ├── .github/
 │   └── workflows/
-│       └── cto-supervision-workflow.yml  # GitHub Actions工作流
+│       └── pm-supervision-workflow.yml  # GitHub Actions工作流
 ├── scripts/
 │   ├── project_supervisor.py            # 项目监督器
 │   ├── manus_interaction_protocol.py    # Manus交互协议
 │   ├── technical_debt_tracker.py        # 技术债务追踪器
-│   └── setup_github_cto.sh              # GitHub配置脚本
-├── cto-supervisor/
+│   └── setup_github_pm.sh              # GitHub配置脚本
+├── pm-supervisor/
 │   ├── Dockerfile                       # Docker镜像配置
 │   ├── requirements.txt                 # Python依赖
 │   └── supervisor_server.py             # 监督服务器
 ├── tech_stack_supervision.yaml          # 技术栈监督规则
 ├── database_supervision.sql             # 数据库监督配置
-├── docker-compose.cto-supervision.yml   # Docker Compose配置
+├── docker-compose.pm-supervision.yml   # Docker Compose配置
 └── README.md                            # 本文档
 ```
 
@@ -57,8 +57,8 @@ aicto-system/
 #### 1. 克隆仓库
 
 ```bash
-git clone https://github.com/EverestAn/aicto-system.git
-cd aicto-system
+git clone https://github.com/EverestAn/aipm-system.git
+cd aipm-system
 ```
 
 #### 2. 配置环境变量
@@ -67,11 +67,11 @@ cd aicto-system
 
 ```bash
 # GitHub配置
-GITHUB_CTO_TOKEN=your_github_token_here
+GITHUB_PM_TOKEN=your_github_token_here
 GITHUB_ORG=your-organization
 
 # 数据库配置
-DB_CTO_PASSWORD=your_secure_password_here
+DB_PM_PASSWORD=your_secure_password_here
 ```
 
 ⚠️ **安全提示**：
@@ -84,11 +84,11 @@ DB_CTO_PASSWORD=your_secure_password_here
 如果需要自动化GitHub集成：
 
 ```bash
-chmod +x scripts/setup_github_cto.sh
+chmod +x scripts/setup_github_pm.sh
 # 编辑脚本，填入您的实际值
-nano scripts/setup_github_cto.sh
+nano scripts/setup_github_pm.sh
 # 执行配置
-./scripts/setup_github_cto.sh
+./scripts/setup_github_pm.sh
 ```
 
 #### 4. 初始化数据库（可选）
@@ -104,13 +104,13 @@ psql -U postgres -f database_supervision.sql
 使用Docker Compose：
 
 ```bash
-docker-compose -f docker-compose.cto-supervision.yml up -d
+docker-compose -f docker-compose.pm-supervision.yml up -d
 ```
 
 检查服务状态：
 
 ```bash
-docker-compose -f docker-compose.cto-supervision.yml ps
+docker-compose -f docker-compose.pm-supervision.yml ps
 ```
 
 ## 📖 使用指南
@@ -175,9 +175,9 @@ print(directive)
 
 系统包含三个主要服务：
 
-1. **cto-supervisor**：主监督服务器
+1. **pm-supervisor**：主监督服务器
 2. **code-auditor**：代码审计服务
-3. **postgres-cto**：监督数据库
+3. **postgres-pm**：监督数据库
 
 ## 🛡️ 安全最佳实践
 
@@ -193,7 +193,7 @@ print(directive)
    - 使用环境变量存储敏感信息
 
 3. **访问控制**：
-   - 限制CTO监督账户的权限范围
+   - 限制PM监督账户的权限范围
    - 定期审查访问日志
    - 启用双因素认证
 
@@ -204,7 +204,7 @@ print(directive)
 - **完整性审计报告**：检查功能完整性
 - **技术债务报告**：追踪未完成的工作
 - **安全审计报告**：识别安全漏洞
-- **CTO干预报告**：记录需要人工干预的问题
+- **PM干预报告**：记录需要人工干预的问题
 
 ## 🤝 与Manus的集成
 
@@ -221,7 +221,7 @@ print(directive)
 
 ```bash
 # 检查日志
-docker-compose -f docker-compose.cto-supervision.yml logs
+docker-compose -f docker-compose.pm-supervision.yml logs
 
 # 检查端口占用
 netstat -tuln | grep 8080

@@ -29,7 +29,7 @@ class ManusInteractionProtocol:
     def send_development_directive(self, task_description, requirements):
         """发送开发指令给Manus"""
         directive = f"""
-🧠 AI CTO 开发指令
+🧠 AI PM 开发指令
 ==================
 
 任务: {task_description}
@@ -52,7 +52,7 @@ class ManusInteractionProtocol:
     def enforce_completion(self, incomplete_work):
         """强制完成不完整的工作"""
         intervention = f"""
-🚨 CTO 强制完成指令
+🚨 PM 强制完成指令
 ==================
 
 检测到未完成工作:

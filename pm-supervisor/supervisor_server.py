@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-AI CTO Supervisor Server
+AI PM Supervisor Server
 监督服务主程序
 """
 from flask import Flask, jsonify, request
@@ -26,7 +26,7 @@ def health_check():
     return jsonify({
         'status': 'healthy',
         'strict_mode': STRICT_MODE,
-        'service': 'AI CTO Supervisor'
+        'service': 'AI PM Supervisor'
     })
 
 @app.route('/audit', methods=['POST'])
@@ -46,9 +46,9 @@ def audit_code():
 
 @app.route('/intervention', methods=['POST'])
 def trigger_intervention():
-    """触发CTO干预"""
+    """触发PM干预"""
     data = request.json
-    logger.warning(f"CTO干预触发: {data}")
+    logger.warning(f"PM干预触发: {data}")
     
     intervention = {
         'status': 'intervention_triggered',
@@ -71,7 +71,7 @@ def get_report():
     return jsonify(report)
 
 if __name__ == '__main__':
-    logger.info("🧠 AI CTO Supervisor 启动中...")
+    logger.info("🧠 AI PM Supervisor 启动中...")
     logger.info(f"严格模式: {STRICT_MODE}")
     app.run(host='0.0.0.0', port=8080, debug=False)
 

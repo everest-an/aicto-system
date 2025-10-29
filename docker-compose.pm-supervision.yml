@@ -1,53 +1,53 @@
 version: '3.8'
 
 services:
-  cto-supervisor:
-    build: ./cto-supervisor
-    container_name: cto-supervisor
+  pm-supervisor:
+    build: ./pm-supervisor
+    container_name: pm-supervisor
     environment:
-      - GITHUB_TOKEN=${GITHUB_CTO_TOKEN}
-      - DB_CTO_USERNAME=cto_supervisor
-      - DB_CTO_PASSWORD=${DB_CTO_PASSWORD}
+      - GITHUB_TOKEN=${GITHUB_PM_TOKEN}
+      - DB_PM_USERNAME=pm_supervisor
+      - DB_PM_PASSWORD=${DB_PM_PASSWORD}
       - STRICT_MODE=true
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./scripts:/app/scripts
       - ./logs:/app/logs
     networks:
-      - cto-network
+      - pm-network
     restart: unless-stopped
 
   code-auditor:
     image: code-auditor:latest
     container_name: code-auditor
     depends_on:
-      - cto-supervisor
+      - pm-supervisor
     environment:
       - AUDIT_LEVEL=strict
-      - SUPERVISOR_URL=http://cto-supervisor:8080
+      - SUPERVISOR_URL=http://pm-supervisor:8080
     volumes:
       - ./code:/code
       - ./audit-results:/results
     networks:
-      - cto-network
+      - pm-network
     restart: unless-stopped
 
-  postgres-cto:
+  postgres-pm:
     image: postgres:15
-    container_name: postgres-cto
+    container_name: postgres-pm
     environment:
-      - POSTGRES_USER=cto_supervisor
-      - POSTGRES_PASSWORD=${DB_CTO_PASSWORD}
-      - POSTGRES_DB=cto_supervision
+      - POSTGRES_USER=pm_supervisor
+      - POSTGRES_PASSWORD=${DB_PM_PASSWORD}
+      - POSTGRES_DB=pm_supervision
     volumes:
       - postgres-data:/var/lib/postgresql/data
       - ./database_supervision.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
-      - cto-network
+      - pm-network
     restart: unless-stopped
 
 networks:
-  cto-network:
+  pm-network:
     driver: bridge
 
 volumes:

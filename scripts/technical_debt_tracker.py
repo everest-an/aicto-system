@@ -29,15 +29,15 @@ class TechnicalDebtTracker:
         print(f"正在检测: {shortcut_type}")
         return False  # 占位符
     
-    def trigger_cto_intervention(self, shortcut):
-        """触发CTO干预"""
+    def trigger_pm_intervention(self, shortcut):
+        """触发PM干预"""
         intervention = {
             'timestamp': datetime.now().isoformat(),
             'issue': shortcut,
             'severity': 'high',
             'action_required': '立即修复'
         }
-        print(f"🚨 CTO干预触发: {shortcut}")
+        print(f"🚨 PM干预触发: {shortcut}")
         return intervention
     
     def track_manus_shortcuts(self):
@@ -46,7 +46,7 @@ class TechnicalDebtTracker:
         
         for shortcut in self.common_shortcuts:
             if self.detect_shortcut(shortcut):
-                issue = self.trigger_cto_intervention(shortcut)
+                issue = self.trigger_pm_intervention(shortcut)
                 detected_issues.append(issue)
         
         return detected_issues
