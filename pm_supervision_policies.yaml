@@ -1,0 +1,306 @@
+# AI PM 监督策略配置
+# 此文件定义了AI PM系统的核心监督规则和最佳实践
+
+version: "1.0"
+last_updated: "2025-10-30"
+
+# ==================== 代码开发最佳实践 ====================
+code_development_best_practices:
+  enabled: true
+  priority: high
+  
+  rules:
+    - name: "充分规划和设计"
+      description: "确保项目结构清晰,避免急功近利导致代码混乱"
+      checks:
+        - type: "architecture_review"
+          trigger: "on_major_feature"
+          actions:
+            - "检查是否有设计文档"
+            - "评估架构合理性"
+            - "识别潜在的技术债务"
+      
+    - name: "清晰的注释和文档"
+      description: "为代码添加清晰的注释和文档，方便其他开发者理解"
+      checks:
+        - type: "documentation_check"
+          trigger: "on_pull_request"
+          thresholds:
+            min_comment_ratio: 0.15  # 至少15%的代码行应有注释
+            require_function_docs: true
+            require_class_docs: true
+          actions:
+            - "检查函数和类是否有文档字符串"
+            - "验证复杂逻辑是否有注释说明"
+            - "确保README.md与代码保持同步"
+      
+    - name: "单一职责原则"
+      description: "确保每个组件和函数都遵循单一职责原则"
+      checks:
+        - type: "code_complexity"
+          trigger: "on_pull_request"
+          thresholds:
+            max_function_lines: 50
+            max_function_complexity: 10
+            max_class_methods: 20
+          actions:
+            - "识别过长或过于复杂的函数"
+            - "建议拆分违反单一职责的组件"
+            - "提供重构建议"
+
+# ==================== 主动问题发现与解决 ====================
+proactive_issue_detection:
+  enabled: true
+  priority: critical
+  
+  strategies:
+    - name: "未完善功能检测"
+      description: "主动发现未完善的功能并推动完善"
+      detection_methods:
+        - type: "incomplete_implementation"
+          indicators:
+            - "TODO注释"
+            - "FIXME注释"
+            - "空函数体"
+            - "占位符代码"
+            - "缺少错误处理"
+            - "缺少测试覆盖"
+          actions:
+            - action: "create_issue"
+              severity: "high"
+              assign_to: "original_author"
+            - action: "block_merge"
+              condition: "critical_incomplete"
+            - action: "suggest_implementation"
+              use_ai: true
+      
+    - name: "潜在Bug预测"
+      description: "基于代码模式和历史数据预测潜在Bug"
+      detection_methods:
+        - type: "pattern_analysis"
+          patterns:
+            - "未检查的空指针"
+            - "资源未释放"
+            - "竞态条件风险"
+            - "SQL注入风险"
+            - "XSS漏洞风险"
+          actions:
+            - action: "create_warning"
+              severity: "high"
+            - action: "suggest_fix"
+              use_ai: true
+      
+    - name: "代码质量下降检测"
+      description: "监控代码质量趋势，及时发现质量下降"
+      metrics:
+        - "代码复杂度"
+        - "测试覆盖率"
+        - "重复代码率"
+        - "技术债务指数"
+      thresholds:
+        complexity_increase: 20%  # 复杂度增加超过20%触发警告
+        coverage_decrease: 5%     # 覆盖率下降超过5%触发警告
+      actions:
+        - action: "send_alert"
+          recipients: ["tech_lead", "pm"]
+        - action: "create_refactoring_task"
+
+# ==================== 功能完成度保障 ====================
+feature_completeness:
+  enabled: true
+  priority: critical
+  
+  requirements:
+    - name: "功能完整性检查"
+      description: "确保每个功能完善且可用"
+      checks:
+        - type: "implementation_completeness"
+          criteria:
+            - "核心功能已实现"
+            - "边界情况已处理"
+            - "错误处理已完善"
+            - "用户体验已优化"
+          actions:
+            - "生成功能完整性报告"
+            - "识别缺失的边界情况处理"
+            - "建议补充的测试场景"
+      
+    - name: "测试覆盖要求"
+      description: "确保功能有充分的测试覆盖"
+      thresholds:
+        min_unit_test_coverage: 80%
+        min_integration_test_coverage: 60%
+        require_e2e_tests: true
+      actions:
+        - action: "block_merge"
+          condition: "below_threshold"
+        - action: "generate_test_suggestions"
+          use_ai: true
+      
+    - name: "文档完整性"
+      description: "确保功能有完整的文档"
+      requirements:
+        - "API文档"
+        - "使用示例"
+        - "配置说明"
+        - "故障排查指南"
+      actions:
+        - "检查文档是否存在"
+        - "验证文档与代码一致性"
+        - "生成缺失文档的模板"
+
+# ==================== 自动化部署与修复 ====================
+automated_deployment_and_fix:
+  enabled: true
+  priority: high
+  
+  deployment_workflow:
+    - name: "功能完成后自动部署"
+      description: "每当开发完成一个功能，同步到GitHub并部署"
+      triggers:
+        - "PR合并到main分支"
+        - "功能标记为完成"
+      steps:
+        - step: "代码同步"
+          action: "push_to_github"
+          verify: true
+        - step: "自动部署"
+          action: "deploy_to_production"
+          platforms:
+            - "vercel"
+            - "custom_server"
+          verify_deployment: true
+        - step: "部署验证"
+          checks:
+            - "健康检查通过"
+            - "关键功能可用"
+            - "性能指标正常"
+      
+  auto_fix_mechanisms:
+    - name: "Bug自动修复"
+      description: "遇到Bug时尝试各种办法修复"
+      strategies:
+        - strategy: "ai_suggested_fix"
+          description: "使用AI生成修复建议"
+          confidence_threshold: 0.8
+          auto_apply: false  # 需要人工审核
+        - strategy: "pattern_based_fix"
+          description: "基于已知模式的自动修复"
+          patterns:
+            - "常见语法错误"
+            - "导入缺失"
+            - "配置错误"
+          auto_apply: true
+        - strategy: "rollback"
+          description: "严重问题时自动回滚"
+          conditions:
+            - "部署后错误率超过5%"
+            - "关键功能不可用"
+          auto_apply: true
+      
+    - name: "部署问题自动修复"
+      description: "部署或存储遇到问题时自动登录并修复"
+      credentials:
+        github_token: "${GITHUB_TOKEN}"  # 从环境变量读取
+        vercel_token: "${VERCEL_TOKEN}"  # 从环境变量读取
+      security_note: "凭证仅用于自动化修复，不会泄露到公共记录"
+      auto_fix_enabled: true
+      actions:
+        - action: "diagnose_deployment_issue"
+          tools: ["vercel_cli", "github_api"]
+        - action: "attempt_auto_fix"
+          max_attempts: 3
+          strategies:
+            - "重新部署"
+            - "清除缓存"
+            - "回滚到上一个稳定版本"
+            - "修复配置错误"
+        - action: "notify_on_failure"
+          recipients: ["tech_lead"]
+          include_diagnostic_report: true
+
+# ==================== 敏感信息安全 ====================
+sensitive_data_protection:
+  enabled: true
+  priority: critical
+  
+  rules:
+    - name: "凭证泄露防护"
+      description: "防止敏感凭证泄露到公共记录"
+      protected_patterns:
+        - "API密钥"
+        - "私钥"
+        - "Token"
+        - "密码"
+        - "数据库连接字符串"
+        - "钱包地址"
+      checks:
+        - type: "pre_commit_scan"
+          action: "block_commit"
+          message: "检测到敏感信息，请使用环境变量"
+        - type: "pr_scan"
+          action: "block_merge"
+          message: "PR包含敏感信息，请立即移除"
+      
+    - name: "凭证使用规范"
+      description: "确保凭证仅在授权操作中使用"
+      requirements:
+        - "使用环境变量存储"
+        - "使用后立即清除"
+        - "不进行持久化存储"
+        - "限制访问权限"
+      audit:
+        enabled: true
+        log_usage: true
+
+# ==================== 监督执行配置 ====================
+supervision_execution:
+  schedule:
+    continuous_monitoring: true
+    periodic_reviews:
+      - frequency: "daily"
+        tasks: ["code_quality_report", "incomplete_features_check"]
+      - frequency: "weekly"
+        tasks: ["technical_debt_analysis", "team_performance_review"]
+  
+  notification_channels:
+    - type: "github_comment"
+      enabled: true
+    - type: "slack"
+      enabled: false
+      webhook_url: ""
+    - type: "email"
+      enabled: false
+      recipients: []
+  
+  ai_integration:
+    llm_provider: "openai"
+    models:
+      reasoning: "gpt-4.1-mini"
+      code_generation: "gpt-4.1-mini"
+    features:
+      auto_suggestion: true
+      auto_fix_generation: true
+      context_aware_analysis: true
+
+# ==================== 学习与优化 ====================
+learning_and_optimization:
+  enabled: true
+  
+  feedback_collection:
+    track_suggestion_acceptance: true
+    track_auto_fix_success: true
+    track_false_positives: true
+  
+  self_reflection:
+    frequency: "daily"
+    actions:
+      - "分析被拒绝的建议"
+      - "识别误报模式"
+      - "调整监督策略"
+      - "更新规则权重"
+  
+  continuous_improvement:
+    update_policies_based_on_feedback: true
+    learn_team_preferences: true
+    adapt_to_project_context: true
